@@ -58,8 +58,9 @@ curl --request POST \
 
 失败返回
 
+http表示EMQX的httpcode返回值
+
 ```json
-// http表示EMQX的httpcode返回值
 {
   "code": 4001,
   "http": 401,
@@ -91,32 +92,36 @@ curl --request POST \
 
 失败返回
 
+1. 鉴权失败
+
 ```json
-// 鉴权失败
 {
   "code": 3001,
   "msg": "Auth Failed"
 }
 ```
 
+2. 数据库获取数据错误 请检查配置
+
 ```json
-// 数据库获取数据错误 请检查配置
 {
   "code": 2001,
   "msg": "SQL GET ERROR"
 }
 ```
 
+3. 数据库设置数据错误 请检查配置
+
 ```json
-// 数据库设置数据错误 请检查配置
 {
   "code": 2002,
   "msg": "SQL SET ERROR"
 }
 ```
 
+4. 用户已存在
+
 ```json
-// 用户已存在
 {
   "code": 2003,
   "msg": "The User is already in the database"
@@ -145,24 +150,27 @@ curl --request DELETE \
 
 失败返回
 
+1. 鉴权失败
+
 ```json
-// 鉴权失败
 {
   "code": 3001,
   "msg": "Auth Failed"
 }
 ```
 
+2. 数据库获取数据错误 请检查配置
+
 ```json
-// 数据库获取数据错误 请检查配置
 {
   "code": 2001,
   "msg": "SQL GET ERROR"
 }
 ```
 
+3. 数据库设置数据错误 请检查配置
+
 ```json
-// 数据库设置数据错误 请检查配置
 {
   "code": 2002,
   "msg": "SQL SET ERROR"
