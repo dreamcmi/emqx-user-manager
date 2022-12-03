@@ -94,6 +94,9 @@ func (*userAddApi) Index(r *ghttp.Request) {
 		for _, elem := range sum1 {
 			sum = append(sum, elem)
 		}
+	default:
+		glog.Error("EMQ authType set error:", config.EmqAuthType)
+		r.Response.WriteJsonExit(g.Map{"code": errno.UserIOErr.Code, "msg": errno.UserIOErr.Message})
 	}
 
 	re, err := db.Insert(g.Map{"username": username,
