@@ -9,6 +9,7 @@ package main
 import (
 	"emqx-user-manager/app/api"
 	"emqx-user-manager/app/middleware"
+	_ "emqx-user-manager/config"
 	_ "emqx-user-manager/init"
 	"github.com/gogf/gf/frame/g"
 )

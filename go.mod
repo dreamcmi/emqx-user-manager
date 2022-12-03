@@ -20,9 +20,9 @@ require (
 	github.com/olekukonko/tablewriter v0.0.5 // indirect
 	go.opentelemetry.io/otel v1.0.0 // indirect
 	go.opentelemetry.io/otel/trace v1.0.0 // indirect
-	golang.org/x/net v0.0.0-20210520170846-37e1c6afe023 // indirect
-	golang.org/x/sys v0.0.0-20210423082822-04245dca01da // indirect
-	golang.org/x/text v0.3.6 // indirect
+	golang.org/x/net v0.2.0 // indirect
+	golang.org/x/sys v0.2.0 // indirect
+	golang.org/x/text v0.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 )
 

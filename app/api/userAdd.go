@@ -7,7 +7,11 @@
 package api
 
 import (
+	"crypto/md5"
+	"crypto/sha1"
 	"crypto/sha256"
+	"crypto/sha512"
+	"emqx-user-manager/config"
 	"emqx-user-manager/errno"
 	"encoding/hex"
 	"github.com/gogf/gf/encoding/gjson"
@@ -22,6 +26,8 @@ var UserAdd = userAddApi{}
 type userAddApi struct{}
 
 func (*userAddApi) Index(r *ghttp.Request) {
+	var sum []byte
+	var sumLen int
 	// auth有效
 	body := r.GetBodyString()
 	glog.Debug(body)
@@ -36,7 +42,7 @@ func (*userAddApi) Index(r *ghttp.Request) {
 	passwd := decode.GetString("password")
 	salt := decode.GetString("salt")
 	// 先进行username唯一性校验
-	db := g.DB("default").Model(g.Config().GetString("emqx.tableName"))
+	db := g.DB("default").Model(config.EmqTableName)
 	all, err := db.Where("username=?", username).One()
 	if err != nil {
 		glog.Error("SQL get err:", err)
@@ -50,9 +56,48 @@ func (*userAddApi) Index(r *ghttp.Request) {
 	if salt != "" {
 		passwd = salt + passwd
 	}
-	sum := sha256.Sum256([]byte(passwd))
+
+	switch config.EmqAuthType {
+	case "sha512":
+		sumLen = 64
+		sum1 := sha512.Sum512([]byte(passwd))
+		for _, elem := range sum1 {
+			sum = append(sum, elem)
+		}
+	case "sha384":
+		sumLen = 48
+		sum1 := sha512.Sum384([]byte(passwd))
+		for _, elem := range sum1 {
+			sum = append(sum, elem)
+		}
+	case "sha256":
+		sumLen = 32
+		sum1 := sha256.Sum256([]byte(passwd))
+		for _, elem := range sum1 {
+			sum = append(sum, elem)
+		}
+	case "sha224":
+		sumLen = 28
+		sum1 := sha256.Sum224([]byte(passwd))
+		for _, elem := range sum1 {
+			sum = append(sum, elem)
+		}
+	case "sha":
+		sumLen = 20
+		sum1 := sha1.Sum([]byte(passwd))
+		for _, elem := range sum1 {
+			sum = append(sum, elem)
+		}
+	case "md5":
+		sumLen = 16
+		sum1 := md5.Sum([]byte(passwd))
+		for _, elem := range sum1 {
+			sum = append(sum, elem)
+		}
+	}
+
 	re, err := db.Insert(g.Map{"username": username,
-		"password_hash": hex.EncodeToString(sum[:]),
+		"password_hash": hex.EncodeToString(sum[:sumLen]),
 		"salt":          salt})
 	if err != nil {
 		glog.Error("SQL set err:", err)

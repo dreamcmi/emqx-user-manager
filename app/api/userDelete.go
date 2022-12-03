@@ -7,6 +7,7 @@
 package api
 
 import (
+	"emqx-user-manager/config"
 	"emqx-user-manager/errno"
 	"github.com/gogf/gf/encoding/gjson"
 	"github.com/gogf/gf/frame/g"
@@ -30,7 +31,7 @@ func (*userDeleteApi) Index(r *ghttp.Request) {
 	}
 	// 获取要删除的用户名
 	username := decode.GetString("username")
-	db := g.DB("default").Model(g.Config().GetString("emqx.tableName"))
+	db := g.DB("default").Model(config.EmqTableName)
 	re, err := db.Delete("username", username)
 	if err != nil {
 		glog.Error("SQL del err:", err)

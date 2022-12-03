@@ -7,6 +7,7 @@
 package middleware
 
 import (
+	"emqx-user-manager/config"
 	"emqx-user-manager/errno"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
@@ -44,6 +45,6 @@ func EmqAuth(r *ghttp.Request) {
 func emqAuth(auth string) (code int, err error) {
 	c := g.Client()
 	c.SetHeader("Authorization", auth)
-	b, err := c.Get(g.Config().GetString("emqx.default") + "/stats")
+	b, err := c.Get(config.EmqAddress + "/stats")
 	return b.StatusCode, err
 }
